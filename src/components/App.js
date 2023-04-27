@@ -13,7 +13,6 @@ export class App extends Component {
     pictures: [],
     isLoading: false,
     error: null,
-    page: 1,
   }
 
   handleFormSubmit = query => {
