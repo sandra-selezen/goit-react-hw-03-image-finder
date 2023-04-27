@@ -13,8 +13,7 @@ export class Searchbar extends Component {
     event.preventDefault();
     const { query } = this.state;
     if (query.trim() === "") {
-      toast.error("Enter a search word");
-      return;
+      return toast.error("Enter a search word");
     }
     this.props.onSubmit(query);
     this.setState({ query: "" });
