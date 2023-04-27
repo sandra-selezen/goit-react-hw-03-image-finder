@@ -6,13 +6,13 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from "./Button/Button";
 import { Layout } from './Layout/Layout';
 
-
 export class App extends Component {
   state = {
     query: "",
     pictures: [],
     isLoading: false,
     error: null,
+    page: 1,
   }
 
   handleFormSubmit = query => {
@@ -20,17 +20,28 @@ export class App extends Component {
     this.getPictures(query);
   }
 
-  getPictures = async (query, page) => {
-    page = 1;
+  getPictures = async (query) => {
+    
     this.setState({ isLoading: true });
     try {
-      const pictures = await getData(query, page);
+      const pictures = await getData(query, this.state.page);
       this.setState({ pictures });
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
       this.setState({ isLoading: false });
     }
+  }
+
+  getMorePictures = async () => {
+    this.setState((prevState) => ({
+      page: prevState.page + 1
+    }))
+
+    const pictures = await getData(this.state.query, this.state.page);
+    this.setState(prevState => ({
+      pictures: [...prevState.pictures, pictures],
+    }))
   }
 
   render() {
