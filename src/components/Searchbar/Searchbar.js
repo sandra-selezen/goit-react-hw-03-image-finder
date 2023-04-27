@@ -1,5 +1,5 @@
 import { Component } from "react";
-
+import { toast } from 'react-hot-toast';
 export class Searchbar extends Component {
   state = {
     query: ""
@@ -13,7 +13,7 @@ export class Searchbar extends Component {
     event.preventDefault();
     const { query } = this.state;
     if (query.trim() === "") {
-      alert("Enter search word");
+      toast.error("Enter a search word");
       return;
     }
     this.props.onSubmit(query);
