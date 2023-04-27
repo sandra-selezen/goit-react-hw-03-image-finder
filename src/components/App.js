@@ -3,7 +3,8 @@ import { getData } from "../api";
 import { Toaster } from 'react-hot-toast';
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-
+import { Button } from "./Button/Button";
+import { Layout } from './Layout/Layout';
 
 
 export class App extends Component {
@@ -12,16 +13,20 @@ export class App extends Component {
     pictures: [],
     isLoading: false,
     error: null,
+    page: 1,
   }
 
-  handleFormSubmit = async query => {
+  handleFormSubmit = query => {
     this.setState({ query });
-    
+    this.getPictures(query);
+  }
+
+  getPictures = async (query, page) => {
+    page = 1;
+    this.setState({ isLoading: true });
     try {
-      let page = 1;
-      // this.setState({ isLoading: true, error: null });
-      const fetchedPictures = await getData(query, page);
-      this.setState({ pictures: fetchedPictures });
+      const pictures = await getData(query, page);
+      this.setState({ pictures });
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
@@ -29,26 +34,14 @@ export class App extends Component {
     }
   }
 
-  // fetchPictures = async query => {
-
-  //   try {
-  //     this.setState({ isLoading: true, error: null });
-  //     const fetchedPictures = await getData(this.state.query);
-  //     this.setState({ pictures: fetchedPictures });
-  //   } catch (error) {
-  //     this.setState({ error: error.message });
-  //   } finally {
-  //     this.setState({ isLoading: false });
-  //   }
-  // }
-
   render() {
     return (
-      <>
+      <Layout>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery pictures={this.state.pictures} />
+        <Button onClick={this.getMorePictures} />
         <Toaster position="top-center"/>
-      </>
+      </Layout>
     )
   }
 }
