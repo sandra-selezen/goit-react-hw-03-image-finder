@@ -8,40 +8,51 @@ import { Layout } from './Layout/Layout';
 
 export class App extends Component {
   state = {
-    query: "",
+    serchQuery: "",
     pictures: [],
     isLoading: false,
     error: null,
-    page: 1,
+    currentPage: 1,
   }
 
   handleFormSubmit = query => {
-    this.setState({ query });
-    this.getPictures(query);
-  }
-
-  getPictures = async (query) => {
-    
-    this.setState({ isLoading: true });
-    try {
-      const pictures = await getData(query, this.state.page);
-      this.setState({ pictures });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
-  getMorePictures = async () => {
-    this.setState((prevState) => ({
-      page: prevState.page + 1
-    }))
-
-    const pictures = await getData(this.state.query, this.state.page);
     this.setState(prevState => ({
-      pictures: [...prevState.pictures, pictures],
-    }))
+      serchQuery: query
+    }));
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    const nextQuery = this.state.serchQuery;
+    const prevQuery = prevState.serchQuery;
+
+    if (nextQuery !== prevQuery) {
+      try {
+        const fetchedPictures = await getData(nextQuery, this.state.currentPage);
+        this.setState(prevState => ({
+          pictures: fetchedPictures
+        }))
+      } catch (error) {
+        this.setState(prevState => ({
+          error: error.message
+        }))
+      }
+    }
+
+    // if (nextQuery === prevQuery) {
+    //   console.log("query does not changed");
+    //   this.setState(prevState => ({
+    //     currentPage: prevState.currentPage + 1
+    //   }))
+    //   const fetchedPictures = await getData(this.state.serchQuery, this.state.currentPage);
+    //   console.log(fetchedPictures);
+    //   this.setState(prevState => ({
+    //     pictures: [...prevState.pictures, fetchedPictures]
+    //   }))
+    // }
+  }
+
+  getMorePictures = () => {
+
   }
 
   render() {
