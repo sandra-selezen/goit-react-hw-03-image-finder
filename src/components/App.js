@@ -1,10 +1,11 @@
 import { Component } from "react";
 import { getData } from "../api";
-import { Toaster } from 'react-hot-toast';
+import { Container } from "./Layout/Layout.styled";
+import { Toaster, toast } from 'react-hot-toast';
+import { Circles } from 'react-loader-spinner'
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from "./Button/Button";
-import { Layout } from './Layout/Layout';
 
 export class App extends Component {
   state = {
@@ -30,6 +31,7 @@ export class App extends Component {
 
     if (nextQuery !== prevQuery) {
       try {
+        this.setState({ isLoading: true });
         const fetchedPictures = await getData(nextQuery, this.state.currentPage);
         this.setState(prevState => ({
           pictures: fetchedPictures,
@@ -37,12 +39,16 @@ export class App extends Component {
       } catch (error) {
         this.setState(prevState => ({
           error: error.message
-        }))
+        }));
+        return toast('Something went wrong...', { icon: '👻', });
+      } finally {
+        this.setState({ isLoading: false });
       }
     }
 
     if (nextPage !== prevPage && nextQuery === prevQuery) {
       try {
+        this.setState({ isLoading: true });
         const fetchedPictures = await getData(nextQuery, nextPage);
         this.setState(prevState => ({
           pictures: [...prevState.pictures, ...fetchedPictures],
@@ -50,9 +56,10 @@ export class App extends Component {
       } catch (error) {
         this.setState(prevState => ({
           error: error.message
-        }))
+        }));
+        return toast('Something went wrong...', { icon: '👻', });
       } finally {
-        
+        this.setState({ isLoading: false });
       }
     }
   }
@@ -64,13 +71,22 @@ export class App extends Component {
   }
 
   render() {
+    const { pictures, isLoading } = this.state;
     return (
-      <Layout>
+      <Container>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery pictures={this.state.pictures} />
-        <Button onClick={this.changePage} />
-        <Toaster position="top-center"/>
-      </Layout>
+        <ImageGallery pictures={pictures} />
+        {isLoading && <Circles
+          height="80"
+          width="80"
+          color="#3f51b5"
+          ariaLabel="circles-loading"
+          wrapperClassName="loader"
+          visible={true}
+        />}
+        {pictures.length > 0 && <Button onClick={this.changePage} />}
+        <Toaster position="top-rightr" />
+      </Container>
     )
   }
 }

@@ -14,7 +14,7 @@ export class Searchbar extends Component {
     event.preventDefault();
     const { query } = this.state;
     if (query.trim() === "") {
-      return toast.error("Enter a search word");
+      return toast('Please enter search word!', { icon: '🦄', });
     }
     this.props.onSubmit(query);
     this.setState({ query: "" });

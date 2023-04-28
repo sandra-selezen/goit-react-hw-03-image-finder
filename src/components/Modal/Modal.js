@@ -23,7 +23,7 @@ export const ImageModal = ({ image, isOpen, onClose }) => {
     >
       <div className="overlay">
         <div className="modal">
-          <img src={image} alt="" />
+          <img src={image} alt="hru hru" width="640" />
         </div>
       </div>
       </Modal>

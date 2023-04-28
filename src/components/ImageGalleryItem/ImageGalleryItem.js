@@ -1,11 +1,28 @@
+import { Component } from "react";
 import { ImageModal } from "components/Modal/Modal"
 import { GalleryImage } from "./ImageGalleryItem.styled"
 
-export const ImageGalleryItem = ({ picture: { webformatURL, largeImageURL, tags } }) => {
-  return (
-    <>
-      <GalleryImage src={webformatURL} alt={tags} />
-      <ImageModal image={largeImageURL} />
-    </>
-  )
+export class ImageGalleryItem extends Component {
+  state = {
+    selectedImg: null,
+  }
+
+  setSelectedImg = () => {
+    this.setState({ selectedImg: this.props.picture.largeImageURL });
+  }
+
+  closeModal = () => {
+    this.setState({ selectedImg: null });
+  }
+
+  render() {
+    const { webformatURL, tags } = this.props.picture;
+    const { selectedImg } = this.state;
+    return (
+      <>
+        <GalleryImage src={webformatURL} alt={tags} onClick={this.setSelectedImg} />
+        <ImageModal isOpen={selectedImg !== null} onClose={this.closeModal} image={selectedImg} />
+      </>
+    )
+  }
 }
