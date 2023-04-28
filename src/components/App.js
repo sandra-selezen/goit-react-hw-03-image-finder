@@ -17,19 +17,22 @@ export class App extends Component {
 
   handleFormSubmit = query => {
     this.setState(prevState => ({
-      serchQuery: query
+      serchQuery: query,
+      currentPage: 1
     }));
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const nextQuery = this.state.serchQuery;
     const prevQuery = prevState.serchQuery;
+    const nextPage = this.state.currentPage;
+    const prevPage = prevState.currentPage;
 
     if (nextQuery !== prevQuery) {
       try {
         const fetchedPictures = await getData(nextQuery, this.state.currentPage);
         this.setState(prevState => ({
-          pictures: fetchedPictures
+          pictures: fetchedPictures,
         }))
       } catch (error) {
         this.setState(prevState => ({
@@ -38,21 +41,26 @@ export class App extends Component {
       }
     }
 
-    // if (nextQuery === prevQuery) {
-    //   console.log("query does not changed");
-    //   this.setState(prevState => ({
-    //     currentPage: prevState.currentPage + 1
-    //   }))
-    //   const fetchedPictures = await getData(this.state.serchQuery, this.state.currentPage);
-    //   console.log(fetchedPictures);
-    //   this.setState(prevState => ({
-    //     pictures: [...prevState.pictures, fetchedPictures]
-    //   }))
-    // }
+    if (nextPage !== prevPage && nextQuery === prevQuery) {
+      try {
+        const fetchedPictures = await getData(nextQuery, nextPage);
+        this.setState(prevState => ({
+          pictures: [...prevState.pictures, ...fetchedPictures],
+        }))
+      } catch (error) {
+        this.setState(prevState => ({
+          error: error.message
+        }))
+      } finally {
+        
+      }
+    }
   }
 
-  getMorePictures = () => {
-
+  changePage = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1
+    }))
   }
 
   render() {
@@ -60,7 +68,7 @@ export class App extends Component {
       <Layout>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery pictures={this.state.pictures} />
-        <Button onClick={this.getMorePictures} />
+        <Button onClick={this.changePage} />
         <Toaster position="top-center"/>
       </Layout>
     )

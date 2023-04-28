@@ -11,6 +11,5 @@ const searchParams = new URLSearchParams({
 
 export const getData = async (query, page) => {
   const response = await axios.get(`${URL}?key=${API_KEY}&${searchParams}&q=${query}&page=${page}`);
-  // console.log(response.data.hits);
   return response.data.hits;
 }
