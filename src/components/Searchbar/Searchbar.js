@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { toast } from 'react-hot-toast';
 import { Header, SearchForm, Input, Button } from "./Searchbar.styled";
+import { HiOutlineSearch } from "react-icons/hi";
 export class Searchbar extends Component {
   state = {
     query: ""
@@ -32,7 +33,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
           />
           <Button type="submit" className="button">
-            <span className="button-label">Search</span>
+            <HiOutlineSearch />
           </Button>
         </SearchForm>
       </Header>

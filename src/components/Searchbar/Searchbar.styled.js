@@ -59,6 +59,11 @@ export const Button = styled.button`
   cursor: pointer;
   outline: none;
 
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
   :hover {
     opacity: 1;
   }
