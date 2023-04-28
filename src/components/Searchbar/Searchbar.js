@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Component } from "react";
 import { toast } from 'react-hot-toast';
 import { Header, SearchForm, Input, Button } from "./Searchbar.styled";
@@ -39,4 +40,9 @@ export class Searchbar extends Component {
       </Header>
     )
   }
+}
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 }

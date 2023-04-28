@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -28,4 +29,10 @@ export const ImageModal = ({ image, isOpen, onClose }) => {
       </div>
       </Modal>
   )
+}
+
+ImageModal.propTypes = {
+  image: PropTypes.string.isRequired,
+  isOpen: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 }

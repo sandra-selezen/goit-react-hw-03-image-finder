@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Component } from "react";
 import { ImageModal } from "components/Modal/Modal"
 import { GalleryImage } from "./ImageGalleryItem.styled"
@@ -16,13 +17,20 @@ export class ImageGalleryItem extends Component {
   }
 
   render() {
-    const { webformatURL, tags } = this.props.picture;
+    const { webformatURL } = this.props.picture;
     const { selectedImg } = this.state;
     return (
       <>
-        <GalleryImage src={webformatURL} alt={tags} onClick={this.setSelectedImg} />
+        <GalleryImage src={webformatURL} onClick={this.setSelectedImg} />
         <ImageModal isOpen={selectedImg !== null} onClose={this.closeModal} image={selectedImg} />
       </>
     )
   }
+}
+
+ImageGalleryItem.propTypes = {
+  picture: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }).isRequired
 }
