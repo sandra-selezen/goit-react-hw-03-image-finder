@@ -25,7 +25,7 @@ export class Searchbar extends Component {
   render() {
     return (
       <Header>
-        <SearchForm className="form" onSubmit={this.handleSubmit}>
+        <SearchForm className="form" onSubmit={this.handleSubmit} autoComplete='off'>
           <Input
             onChange={this.handleQueryChange}
             type="text"
@@ -44,5 +44,5 @@ export class Searchbar extends Component {
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
 }

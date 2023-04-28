@@ -32,7 +32,7 @@ export const ImageModal = ({ image, isOpen, onClose }) => {
 }
 
 ImageModal.propTypes = {
-  image: PropTypes.string.isRequired,
-  isOpen: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
+  image: PropTypes.string,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
 }
